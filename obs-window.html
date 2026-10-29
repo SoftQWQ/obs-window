@@ -2,17 +2,26 @@
 <style>
 @import url('https://fontsapi.zeoseven.com/292/main/result.css');
 #live-app { 
-  --gold: #a8843e; --gold2: #8a6d35; --bg1: #f0ebe2; --bg2: #ede7dc; --line: #d8d0c2; 
-  --tx: #3d3830; --dim: #8a8175; --nsfw: #b8503e;
+  /* 桃红/玫瑰金配色 */
+  --pink-main: #d68c9d; 
+  --pink-deep: #b25b70; 
+  --pink-dark: #7a3a49; 
+  --bg-main: #fcf6f7; 
+  --bg-card: #ffffff; 
+  --bg-bar: #faeff1;
+  --line: #ebd1d6; 
+  --tx: #4a3237; 
+  --dim: #987b81; 
+  --nsfw: #c92a2a;
   font-family: "Noto Sans SC", sans-serif; max-width: 800px; margin: 12px auto; 
-  background: var(--bg1); border-radius: 12px; overflow: hidden; 
-  box-shadow: 0 4px 15px rgba(0,0,0,.05); color: var(--tx); font-size: 14px; line-height: 1.6; 
+  background: var(--bg-main); border-radius: 12px; overflow: hidden; 
+  box-shadow: 0 4px 20px rgba(178, 91, 112, 0.15); color: var(--tx); font-size: 14px; line-height: 1.6; 
   border: 1px solid var(--line);
 }
 #live-app * { box-sizing: border-box; margin: 0; padding: 0; }
 
 /* 顶部导航 */
-.live-header { background: linear-gradient(90deg, var(--gold2), var(--gold)); color: #fff; padding: 12px 16px; display: flex; align-items: center; cursor: pointer; user-select: none; }
+.live-header { background: linear-gradient(90deg, var(--pink-deep), var(--pink-main)); color: #fff; padding: 12px 16px; display: flex; align-items: center; cursor: pointer; user-select: none; }
 .live-header .dot { width: 8px; height: 8px; background: #fff; border-radius: 50%; margin-right: 10px; animation: pulse 1.5s infinite; }
 @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.4; } }
 .live-header .title { flex: 1; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: 1px; }
@@ -22,60 +31,60 @@
 .live-body.collapsed { display: none; }
 
 /* 档案信息条 */
-.live-info-bar { background: var(--bg2); border-bottom: 1px solid var(--line); padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; color: var(--gold2); }
-.live-info-bar .back-btn { background: rgba(168,132,62,0.1); padding: 4px 10px; border-radius: 6px; font-size: 13px; border: 1px solid rgba(168,132,62,0.2); }
+.live-info-bar { background: var(--bg-bar); border-bottom: 1px solid var(--line); padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; color: var(--pink-dark); }
+.live-info-bar .back-btn { background: rgba(214,140,157,0.15); padding: 4px 10px; border-radius: 6px; font-size: 13px; border: 1px solid rgba(214,140,157,0.3); }
 .live-info-bar .info-title { font-weight: 600; font-size: 15px; letter-spacing: 2px; }
 .live-info-bar .actions { display: flex; gap: 8px; }
-.live-info-bar .actions span { background: rgba(168,132,62,0.1); padding: 4px 10px; border-radius: 6px; font-size: 13px; border: 1px solid rgba(168,132,62,0.2); }
+.live-info-bar .actions span { background: rgba(214,140,157,0.15); padding: 4px 10px; border-radius: 6px; font-size: 13px; border: 1px solid rgba(214,140,157,0.3); }
 
 .main-card { padding: 16px; }
 .host-profile { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.avatar-box { width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--gold); overflow: hidden; background: #fff; }
+.avatar-box { width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--pink-main); overflow: hidden; background: #fff; }
 .avatar-box svg { width: 100%; height: 100%; }
-.host-info .name { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 6px; color: var(--gold2); }
-.host-info .lv { background: rgba(168,132,62,0.15); color: var(--gold2); font-size: 12px; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+.host-info .name { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 6px; color: var(--pink-deep); }
+.host-info .lv { background: rgba(214,140,157,0.15); color: var(--pink-deep); font-size: 12px; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
 .host-info .title { color: var(--dim); font-size: 14px; margin-top: 4px; }
 
-.status-badge { display: inline-block; border: 1px solid var(--line); color: var(--gold2); padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 16px; background: #fff; }
+.status-badge { display: inline-block; border: 1px solid var(--line); color: var(--pink-deep); padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 16px; background: #fff; }
 
 .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-.stat-card { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; }
+.stat-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; }
 .stat-label { color: var(--dim); font-size: 12px; margin-bottom: 4px; }
-.stat-value { font-size: 20px; font-weight: 700; color: var(--gold2); }
+.stat-value { font-size: 20px; font-weight: 700; color: var(--pink-deep); }
 
 /* 媒体区与弹幕 */
-.media-area { position: relative; background: #111; border-radius: 8px; overflow: hidden; aspect-ratio: 4/3; margin-bottom: 16px; display: flex; justify-content: center; border: 1px solid var(--line); }
+.media-area { position: relative; background: #1a1113; border-radius: 8px; overflow: hidden; aspect-ratio: 4/3; margin-bottom: 16px; display: flex; justify-content: center; border: 1px solid var(--line); }
 .media-area img { width: 100%; height: 100%; object-fit: contain; display: block; opacity: 0; transition: opacity 0.3s; position: absolute; top: 0; left: 0; }
 .media-area img.active { opacity: 1; }
 .media-area img.nsfw { filter: blur(25px); cursor: pointer; transition: filter 0.3s; }
 .media-area img.nsfw.shown { filter: none; }
 .danmaku-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; }
-.danmaku-item { position: absolute; left: 100%; white-space: nowrap; color: #fff; font-weight: 600; text-shadow: 1px 1px 3px #000; font-size: 15px; animation: fly linear forwards; }
+.danmaku-item { position: absolute; left: 100%; white-space: nowrap; color: #fff; font-weight: 600; text-shadow: 1px 1px 4px rgba(178, 91, 112, 0.9); font-size: 15px; animation: fly linear forwards; }
 @keyframes fly { from { transform: translateX(0); } to { transform: translateX(calc(-100vw - 100%)); } }
 
-.nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(168,132,62,0.6); color: #fff; border: none; font-size: 24px; padding: 4px 10px; cursor: pointer; border-radius: 4px; z-index: 10; }
+.nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(214,140,157,0.6); color: #fff; border: none; font-size: 24px; padding: 4px 10px; cursor: pointer; border-radius: 4px; z-index: 10; }
 .nav-btn.prev { left: 8px; } .nav-btn.next { right: 8px; }
 .dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 10; }
 .dots span { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; }
-.dots span.active { background: var(--gold); }
+.dots span.active { background: var(--pink-main); }
 
-.desc-box { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; }
-.desc-title { color: var(--gold2); font-weight: 600; font-size: 14px; margin-bottom: 8px; }
+.desc-box { background: var(--bg-card); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; }
+.desc-title { color: var(--pink-deep); font-weight: 600; font-size: 14px; margin-bottom: 8px; border-left: 3px solid var(--pink-main); padding-left: 8px;}
 .desc-content { font-size: 14px; line-height: 1.8; color: var(--tx); }
 
-/* 聊天室统一灰色标签 */
-.chat-box { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; }
-.chat-title { color: var(--gold2); font-weight: 600; font-size: 14px; margin-bottom: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+/* 聊天室粉色标签 */
+.chat-box { background: var(--bg-card); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; }
+.chat-title { color: var(--pink-deep); font-weight: 600; font-size: 14px; margin-bottom: 12px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
 .chat-list { display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto; padding-right: 4px; }
 .msg { display: flex; gap: 8px; font-size: 14px; align-items: flex-start; padding: 4px 0; }
 .msg .badges { display: flex; gap: 4px; flex-shrink: 0; margin-top: 2px; }
 .msg .badge { font-size: 11px; padding: 1px 6px; border-radius: 4px; color: #fff; font-weight: 600; height: fit-content; }
-.badge.user { background: #888; } 
+.badge.user { background: #bcaaae; } /* 偏粉灰的用户标签 */
 .badge.vip-0 { display: none; } 
-.badge.vip-1 { background: #6a9c89; } /* 浅尝 - 淡淡的青绿 */
-.badge.vip-2 { background: #8a6d35; } /* 常客 - 蜜金色 */
-.badge.vip-3 { background: #b8503e; } /* 知音 - 禁忌深红 */
-.msg .name { font-weight: 600; color: var(--dim); flex-shrink: 0; }
+.badge.vip-1 { background: #e89ca8; } /* 浅尝 - 浅粉色 */
+.badge.vip-2 { background: #d6687d; } /* 常客 - 桃红色 */
+.badge.vip-3 { background: #a32842; } /* 知音 - 玫红色 */
+.msg .name { font-weight: 600; color: var(--pink-deep); flex-shrink: 0; }
 .msg-text { word-break: break-word; color: var(--tx); }
 </style>
 
@@ -91,13 +100,13 @@
   <div class="live-info-bar">
     <div class="back-btn">← 返回</div>
     <div class="info-title">情感档案 · 观测端</div>
-    <div class="actions"><span>A</span><span>🌙</span></div>
+    <div class="actions"><span>A</span><span>🌸</span></div>
   </div>
   
   <div class="main-card">
     <div class="host-profile">
       <div class="avatar-box">
-        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#a8843e"/><text x="50" y="60" font-size="40" text-anchor="middle" fill="#fff">档</text></svg>
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#d68c9d"/><text x="50" y="60" font-size="40" text-anchor="middle" fill="#fff">档</text></svg>
       </div>
       <div class="host-info">
         <div class="name"><span id="host-name">档案编号</span> <span class="lv" id="host-lv">Lv.?</span></div>
@@ -201,7 +210,7 @@
     if(imgs.length > 0) updateImg();
     if(imgs.length < 2) area.querySelectorAll('.nav-btn').forEach(e=>e.style.display='none');
 
-    // 解析飘屏弹幕
+    // 解析弹幕
     var dmBlock = (raw.match(/<danmaku_list>([\s\S]*?)<\/danmaku_list>/)||[])[1]||'';
     var dms = [];
     var dmReg = /\[弹幕\|([^\]]+)\]/g;
@@ -227,9 +236,8 @@
       }, 1200);
     }
 
-    // 解析聊天室 (更新后的格式)
+    // 解析聊天室
     var chatBlock = (raw.match(/<chat_messages>([\s\S]*?)<\/chat_messages>/)||[])[1]||'';
-    // [消息|昵称|等级|VIP状态|聊天具体内容]
     var chatReg = /\[消息\|([^|]+)\|([^|]+)\|([^|]+)\|([^\]]+)\]/g;
     var chatHtml = '';
     while((m=chatReg.exec(chatBlock))!==null){
