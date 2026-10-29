@@ -1,13 +1,8 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>情感档案</title>
+<div id="obs-wrap">
 <style>
 :root{--bg1:#f0ebe2;--bg2:#ede7dc;--line:#d8d0c2;--gold:#a8843e;--gold2:#8a6d35;--tx:#3d3830;--dim:#8a8175;--nsfw:#b8503e;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif;color:var(--tx);line-height:1.6;font-size:14px;background:transparent;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif;color:var(--tx);line-height:1.6;font-size:14px;background:transparent}
 .archive{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:linear-gradient(160deg,var(--bg1),var(--bg2));max-width:820px;margin:12px auto}
 .a-head{display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;user-select:none;border-bottom:1px solid var(--line)}
 .a-head:hover{background:rgba(168,132,62,.05)}
@@ -40,35 +35,35 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans
 .empty{color:var(--dim);font-size:.85em}
 .err{color:var(--nsfw);font-size:.85em;line-height:1.7}
 </style>
-</head>
-<body>
-<div id="obs-root"><div class="err" style="padding:12px 16px">等待数据…</div></div>
+<div id="obs-root"><div class="err" style="max-width:820px;margin:12px auto;padding:12px 16px">等待数据…</div></div>
 <script>
 (function(){
-  'use strict';
   var IMAGE_BASE_URL = 'https://img.emolsp.online/CG/wife_forum/';
 
   function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
   function field(x,n){var m=x.match(new RegExp('\\['+n+'\\|([^\\]]*)\\]'));return m?m[1].trim():'';}
   function block(x,t){var m=x.match(new RegExp('<'+t+'>([\\s\\S]*?)</'+t+'>'));return m?m[1].trim():'';}
   function rows(x,label,n){var mid=[];for(var i=0;i<n-1;i++){mid.push('([^\\|\\]]*)');}var re=new RegExp('\\['+label+'\\|'+mid.join('\\|')+'\\|([^\\]]*)\\]','g');var out=[],m;while((m=re.exec(x))!==null){out.push(m.slice(1).map(function(s){return s.trim();}));}return out;}
-  function cleanRaw(v){if(!v)return '';v=String(v).trim();if(v==='$1'||v==='$&'||v==='$0')return '';v=v.replace(/^\s*<obs_window>/i,'').replace(/<\/obs_window>\s*$/i,'').trim();return v;}
+
+  function getRaw(){
+    try{
+      var gc = (typeof getChatMessages === 'function') ? getChatMessages : (window.parent && window.parent.getChatMessages);
+      var gid = (typeof getCurrentMessageId === 'function') ? getCurrentMessageId : (window.parent && window.parent.getCurrentMessageId);
+      if(typeof gc !== 'function' || typeof gid !== 'function') return '';
+      var msgs = gc(gid());
+      if(!msgs || !msgs[0] || !msgs[0].message) return '';
+      var m = msgs[0].message.match(/<obs_window>([\s\S]*?)<\/obs_window>/);
+      return m ? m[1] : '';
+    }catch(e){ return ''; }
+  }
 
   function render(raw){
-    var root=document.getElementById('obs-root');
-    raw=cleanRaw(raw);
-    if(!raw){
-      root.innerHTML='<div class="err" style="max-width:820px;margin:12px auto;padding:12px 16px;border:1px solid #d8d0c2;border-radius:8px;background:rgba(184,80,62,.06)">读不到档案内容。请检查正则 findRegex 需为 &lt;obs_window&gt;([\\s\\S]*?)&lt;\\/obs_window&gt;，replaceString 需保留 $1。</div>';
-      return;
-    }
+    var root = document.getElementById('obs-root');
     var id=field(raw,'档案编号'),era=field(raw,'档案年代'),summary=field(raw,'场景概要'),viewers=field(raw,'在线回看'),status=field(raw,'档案状态');
     var frames=rows(block(raw,'images'),'图片',3),dms=rows(block(raw,'danmaku_list'),'弹幕',2),desc=block(raw,'window_description');
 
     root.innerHTML='<div class="archive"><div class="a-head"><span class="a-mark"></span><span class="a-title">情感档案</span><span class="a-sub">'+esc((id?id+' · ':'')+(era||'')+(status?' · '+status:''))+'</span><span class="a-arrow">▾</span></div><div class="a-panel"></div></div>';
-
-    var archive=root.querySelector('.archive');
-    var head=root.querySelector('.a-head');
-    var panel=root.querySelector('.a-panel');
+    var archive=root.querySelector('.archive'),head=root.querySelector('.a-head'),panel=root.querySelector('.a-panel');
     head.addEventListener('click',function(){archive.classList.toggle('open');});
 
     var h='',fs='';
@@ -87,8 +82,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans
       fh+='<div class="frame'+(nsfw?' nsfw':'')+'"><img src="'+esc(src)+'" loading="lazy" onerror="this.style.display=\'none\';this.parentNode.querySelector(\'.miss\').style.display=\'flex\'" /><div class="miss">画面不可用</div>'+(nsfw?'<div class="veil"><span>⚠ 成人画面</span><span>点击显示</span></div>':'')+'</div>';
     });
     if(fh)h+='<div class="sec-title">档案截图</div><div class="frames">'+fh+'</div>';
-    if(dms.length){h+='<div class="sec-title">弹幕回看</div><div class="danmaku">'+dms.map(function(d){return '<div class="dm">'+esc(d[0])+'</div>';}).join('')+'</div>';}
-    if(desc){h+='<div class="sec-title">档案记录</div><div class="desc">'+esc(desc)+'</div>';}
+    if(dms.length)h+='<div class="sec-title">弹幕回看</div><div class="danmaku">'+dms.map(function(d){return '<div class="dm">'+esc(d[0])+'</div>';}).join('')+'</div>';
+    if(desc)h+='<div class="sec-title">档案记录</div><div class="desc">'+esc(desc)+'</div>';
     panel.innerHTML=h||'<div class="empty">档案内容为空</div>';
 
     Array.prototype.forEach.call(root.querySelectorAll('.frame.nsfw'),function(f){
@@ -96,12 +91,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans
     });
   }
 
-  window.addEventListener('message',function(e){
-    if(e.data && e.data.type==='obs-data' && typeof e.data.raw==='string'){
-      render(e.data.raw);
+  var tries=0;
+  function tick(){
+    tries++;
+    var raw=getRaw();
+    if(raw){render(raw);return;}
+    if(tries<15){setTimeout(tick,300);}
+    else{
+      document.getElementById('obs-root').innerHTML='<div class="err" style="max-width:820px;margin:12px auto;padding:12px 16px;border:1px solid #d8d0c2;border-radius:8px;background:rgba(184,80,62,.06)">读不到档案内容。请检查：1. 正则 Find 为 &lt;obs_window&gt;([\\s\\S]*?)&lt;\\/obs_window&gt;；2. 消息原文里确实有 &lt;obs_window&gt;；3. 酒馆助手已启用。</div>';
     }
-  });
+  }
+  tick();
 })();
 </script>
-</body>
-</html>
+</div>
